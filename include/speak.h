@@ -8,11 +8,17 @@
 
 #pragma once
 
-#include <cstdlib>
 #include <string>
+
+/**
+ * @brief 自作ライブラリ用の名前空間
+ */
+namespace my_lib {
 
 /**
  * @brief メッセージを喋らせる
  * @param msg 喋らせるメッセージの文字列
  */
 void Speak(const std::string msg);
+
+} // namespace my_lib

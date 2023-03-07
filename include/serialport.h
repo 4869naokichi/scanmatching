@@ -7,57 +7,72 @@
 
 #pragma once
 
-#include <tchar.h>
 #include <windows.h>
 
-#include <cstring>
-#include <iostream>
-
-#include "speak.h"
+#include <string>
 
 /**
- * @brief COMポートをセットアップする
- * @param port シリアルポート名
- * @param baudrate ボーレート
- * @retval TRUE 成功
- * @retval FALSE 失敗
+ * @brief 自作ライブラリ用の名前空間
  */
-BOOL SetupComPort(std::string port, DWORD baudrate);
+namespace my_lib {
 
 /**
- * @brief 1バイトのデータを送信する
- * @param txData 送信するデータ
- * @retval TRUE 送信成功
- * @retval FALSE 送信失敗
+ * @brief シリアル通信を行うクラス
  */
-BOOL WriteByte(uint8_t txData);
+class SerialPort {
+ private:
+  /** COMポートのハンドラ */
+  HANDLE hComPort;
+  /** シリアルポート名 */
+  std::string port;
+  /** ボーレート */
+  DWORD baudrate;
 
-/**
- * @brief 1バイトのデータを受信する
- * @return 受信したデータ
- * @note ポーリングで受信する
- */
-uint8_t ReadByte(void);
+ public:
+  /**
+   * @brief COMポートをセットアップする
+   * @retval TRUE 成功
+   * @retval FALSE 失敗
+   */
+  BOOL SetupComPort(std::string port, DWORD baudrate);
 
-/**
- * @brief 文字列を送信する
- * @param txData 送信する文字列
- * @retval TRUE 送信成功
- * @retval FALSE 送信失敗
- */
-BOOL WriteLine(const std::string txData);
+  /**
+   * @brief 1バイトのデータを送信する
+   * @param txData 送信するデータ
+   * @retval TRUE 送信成功
+   * @retval FALSE 送信失敗
+   */
+  BOOL WriteByte(uint8_t txData);
 
-/**
- * @brief 文字列を受信する
- * @return 受信した文字列
- * @note ポーリングで受信する
- */
-std::string ReadLine(void);
+  /**
+   * @brief 1バイトのデータを受信する
+   * @return 受信したデータ
+   * @note ポーリングで受信する
+   */
+  uint8_t ReadByte();
 
-/**
- * @brief float型の数値を送信する
- * @param f 送信する数値
- * @retval TRUE 送信成功
- * @retval FALSE 送信失敗
- */
-BOOL WriteFloat(float f);
+  /**
+   * @brief 文字列を送信する
+   * @param txData 送信する文字列
+   * @retval TRUE 送信成功
+   * @retval FALSE 送信失敗
+   */
+  BOOL WriteLine(const std::string txData);
+
+  /**
+   * @brief 文字列を受信する
+   * @return 受信した文字列
+   * @note ポーリングで受信する
+   */
+  std::string ReadLine();
+
+  /**
+   * @brief float型の数値を送信する
+   * @param f 送信する数値
+   * @retval TRUE 送信成功
+   * @retval FALSE 送信失敗
+   */
+  BOOL WriteFloat(float f);
+};
+
+}  // namespace my_lib

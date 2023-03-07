@@ -1,7 +1,10 @@
 add_library(scanmatching SHARED)
 target_sources(scanmatching PRIVATE scanmatching.cpp)
 target_include_directories(scanmatching PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(scanmatching urg serialport speak)
+target_link_libraries(scanmatching urg serialport speak timer Python3::Python Python3::NumPy)
+
+find_package(Python3 COMPONENTS Development NumPy)
+target_include_directories(scanmatching PRIVATE ${Python3_INCLUDE_DIRS} ${Python3_NumPy_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/include)
 
 add_library(urg SHARED IMPORTED GLOBAL)
 set_target_properties(urg

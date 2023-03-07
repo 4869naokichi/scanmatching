@@ -9,47 +9,56 @@
 
 #define _USE_MATH_DEFINES
 
-#include <cmath>
-#include <iostream>
-#include <sstream>
-#include <tuple>
-#include <vector>
-
+#include "robotics_util.h"
 #include "serialport.h"
-#include "speak.h"
-#include "timer.h"
 
 /**
- * @brief LRFをセットアップする
- * @retval TRUE 成功
- * @retval FALSE 失敗
+ * @brief 自作ライブラリ用の名前空間
  */
-BOOL SetupURG();
+namespace my_lib {
 
 /**
- * @brief LRFからの電文を受信する
- * @return 受信した電文
- * @note 終端コードはLFLF
+ * @brief URG
  */
-std::string ReadLineURG();
+class URG {
+ private:
+  SerialPort serial;
 
-/**
- * @brief レーザースキャンデータを取得する
- * @return レーザースキャンデータ（直交座標）
- * @note auto [x, y] = GetScan(); のように戻り値を受け取ってください
- */
-std::tuple<std::vector<float>, std::vector<float>> GetScan();
+ public:
+  /**
+   * @brief LRFをセットアップする
+   * @param port シリアルポート名
+   * @param baudrate ボーレート
+   * @retval TRUE 成功
+   * @retval FALSE 失敗
+   */
+  BOOL Setup(std::string port, DWORD baudrate);
 
-/**
- * @brief LRFから送信されたデータをデコードする
- * @param rawData エンコードされたデータ
- * @return 距離データ
- */
-std::vector<int> Decode(std::string rawData);
+  /**
+   * @brief LRFからの電文を受信する
+   * @return 受信した電文
+   * @note 終端コードはLFLF
+   */
+  std::string ReadLine();
 
-/**
- * @brief LRFを停止する
- * @retval TRUE 成功
- * @retval FALSE 失敗
- */
-BOOL StopURG();
+  /**
+   * @brief レーザースキャンデータを取得する
+   * @return レーザースキャンデータ（直交座標）
+   */
+  PointCloud GetScan();
+
+  /**
+   * @brief LRFから送信されたデータをデコードする
+   * @param rawData エンコードされたデータ
+   * @return 距離データ
+   */
+  std::vector<int> Decode(std::string rawData);
+
+  /**
+   * @brief LRFを停止する
+   * @retval TRUE 成功
+   * @retval FALSE 失敗
+   */
+  BOOL Stop();
+};
+}  // namespace my_lib

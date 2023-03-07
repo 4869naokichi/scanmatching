@@ -7,11 +7,21 @@
 
 #pragma once
 
-#include <iostream>
 #include <windows.h>
 
-/** 処理時間を計測するクラス */
+/**
+ * @brief 自作ライブラリ用の名前空間
+ */
+namespace my_lib {
+
+/**
+ * @brief 処理時間を計測するクラス
+ */
 class Timer {
+private:
+  LARGE_INTEGER freq;
+  LARGE_INTEGER start, end;
+
 public:
   /**
    * コンストラクタ
@@ -28,8 +38,6 @@ public:
    * @return 経過時間 [s]
    */
   double GetElapsedTime();
-
-private:
-  LARGE_INTEGER freq;
-  LARGE_INTEGER start, end;
 };
+
+} // namespace my_lib
